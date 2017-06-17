@@ -18,11 +18,16 @@
   <script>
   function initMap() {
     var bengaluru = {lat: 12.971599, lng: 77.594563};
+    var hsrLayout = {lat: 12.9081, lng: 77.6476};
     var options = {
-      zoom: 12,
+      zoom: 10,
       center: bengaluru
     };
     var map = new google.maps.Map(document.getElementById('map'), options);
+    var marker = new google.maps.Marker({
+      position: hsrLayout,
+      map: map
+    });
   }
   </script>
   <script async defer
