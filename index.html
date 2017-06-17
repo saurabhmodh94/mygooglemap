@@ -26,9 +26,9 @@
     var map = new google.maps.Map(document.getElementById('map'), options);
     var marker = new google.maps.Marker({
       position: hsrLayout,
-      map: map,
-      icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+      map: map
     });
+    marker.setIcon('https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png');
     var infoWindow = new google.maps.InfoWindow({
       content: '<h3>Hsr Layout</h3>'
     })
