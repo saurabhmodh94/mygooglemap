@@ -36,6 +36,14 @@
       infoWindow.open(map,marker);
     })
     // TODO: write optimize code for adding multiple markers
+
+    // add marker on click
+    map.addListener('click', function(event){
+      var marker = new google.maps.Marker({
+        position: event.latLng,
+        map: map
+      });
+    })
   }
   </script>
   <script async defer
