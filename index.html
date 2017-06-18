@@ -5,16 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>My Google Map</title>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <style>
   #map {
-    height: 400px;
+    height: 300px;
     width: 100%;
   }
   </style>
 </head>
 <body>
   <h3>My Google Maps Demo</h3>
+  <form id="location-form">
+    <input type="text" id="location-value" placeholder="Enter location here.." />
+    <input type="submit" value="Submit" />
+  </form>
+  <br/>
   <div id="map"></div>
+  <div id="formattedAddress"></div>
+  <div id="addressComponents"></div>
+  <div id="geometryLocation"></div>
   <script>
   function initMap() {
     var bengaluru = {lat: 12.971599, lng: 77.594563};
@@ -44,6 +53,38 @@
         map: map
       });
     })
+  }
+  </script>
+  <script>
+  document.getElementById('location-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    getGeoCoding(document.getElementById("location-value").value);
+  })
+  function getGeoCoding(location) {
+    axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+      params:{
+        address: location,
+        key: "AIzaSyDA5c3f4rQwizYcs-GWvbxl09tcJ8wAJpw"
+      }
+    })
+    .then(function (response) {
+      var formattedAddress = response.data.results[0].formatted_address;
+      var addressComponents = response.data.results[0].address_components;
+      var geometryLocation = response.data.results[0].geometry.location;
+      var formattedAddressOutput = `<div><pre>${formattedAddress}</pre></div>`;
+      var addressComponentsOutput = `<table>`;
+      for(var i=0; i< addressComponents.length; i++){
+        addressComponentsOutput += `<tr><td><b>${addressComponents[i].types[0]}</b></td><td> : ${addressComponents[i].long_name}</td></tr>`;
+      }
+      addressComponentsOutput += `</table>`;
+      var geometryLocationOutput = `<br/><b>Location:</b><br/><ul><li>lat: ${geometryLocation.lat}</li><li>lng: ${geometryLocation.lng}</li></ul>`
+      document.getElementById('formattedAddress').innerHTML = formattedAddressOutput;
+      document.getElementById('addressComponents').innerHTML = addressComponentsOutput;
+      document.getElementById('geometryLocation').innerHTML = geometryLocationOutput;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
   </script>
   <script async defer
